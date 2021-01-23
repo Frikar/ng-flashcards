@@ -2,3 +2,16 @@
   display: flex;
   flex-wrap: wrap;
 }
+
+.container {
+  text-align: -webkit-center;
+}
+
+form {
+  margin: 10px;
+  width: 300px;
+}
+
+.clear-btn {
+  margin-left: 10px;
+}

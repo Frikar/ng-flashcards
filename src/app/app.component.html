@@ -1,5 +1,26 @@
+<div>
+  <form #flashForm="ngForm" class="has-text-left">
+    <h1 class="is-size-3">Add New Flash Card</h1>
+    <div class="field">
+      <label class="label">Question</label>
+      <div class="control">
+        <input required class="input" type="text" name="question" [(ngModel)]="flash.question"
+               #question="ngModel" [ngClass]="{'is-danger': question.invalid && !question.pristine}">
+      </div>
+    </div>
+    <div class="field">
+      <label class="label">Answer</label>
+      <div class="control">
+        <input required class="input" type="text" name="answer" [(ngModel)]="flash.answer"
+               #answer="ngModel" [ngClass]="{'is-danger': answer.invalid && !question.pristine}">
+      </div>
+    </div>
+    <button class="button is-primary" type="submit" (click)="handleSubmit()">Submit</button>
+    <button class="button clear-btn" (click)="handleClear()">Clear</button>
+  </form>
+</div>
 <div class="flashs">
   <app-flash *ngFor="let flash of flashes; trackBy: trackByFlashId" [flash]="flash"
              (toggleEvent)="handleToggleCard($event)" (deleteEvent)="handleDeleteCard($event)"
-             (rememberedEvent)="handleRememberedChange($event)" (editEvent)="handleEdit($event)" ></app-flash>
+             (rememberedEvent)="handleRememberedChange($event)" (editEvent)="handleEdit($event)"></app-flash>
 </div>
