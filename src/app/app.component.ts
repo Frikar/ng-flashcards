@@ -50,7 +50,22 @@ export class AppComponent {
   handleEdit(id: number) {
     this.editing = true;
     this.editingId = id;
-    // TODO: We will add editing logic after adding the form
+    const flash = this.flashes.find(flash => flash.id === id)!;
+    this.flash.question = flash.question;
+    this.flash.answer = flash.answer;
+  }
+
+  handleUpdate() {
+    const flash = this.flashes.find(flash => flash.id === this.editingId)!;
+    flash.question = this.flash.question;
+    flash.answer = this.flash.answer;
+    this.handleCancel();
+  }
+
+  handleCancel() {
+    this.editing = false;
+    this.editingId = undefined;
+    this.handleClear();
   }
 
   handleRememberedChange({id, flag}){

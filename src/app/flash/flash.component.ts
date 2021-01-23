@@ -21,22 +21,22 @@ export class FlashComponent implements OnInit {
   constructor() {
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
   }
 
-  toggleCard(): void {
+  toggleCard() {
     this.toggleEvent.emit(this.flash.id);
   }
 
-  deleteCard(): void {
+  deleteCard() {
     this.deleteEvent.emit(this.flash.id);
   }
 
-  editFlash(): void {
+  editFlash() {
     this.editEvent.emit(this.flash.id);
   }
 
-  markCorrect(): void {
+  markCorrect() {
     this.rememberedEvent.emit({
       id: this.flash.id,
       flag: 'correct',
@@ -44,7 +44,7 @@ export class FlashComponent implements OnInit {
     console.log(this.flash.remembered);
   }
 
-  markIncorrect(): void {
+  markIncorrect() {
     this.rememberedEvent.emit({
       id: this.flash.id,
       flag: 'incorrect',
