@@ -1,6 +1,8 @@
 import {Component, Input, ViewChild} from '@angular/core';
 import {Iflash} from './flash.model';
 import {NgForm} from '@angular/forms';
+import {FlashService} from './flash.service';
+import {templateJitUrl} from '@angular/compiler';
 
 @Component({
   selector: 'app-root',
@@ -16,49 +18,32 @@ export class AppComponent {
     question: '',
     answer: ''
   };
-  flashes: Iflash[] = [{
-    question: 'Question 1',
-    answer: 'Answer 1',
-    show: false,
-    id: getRandomNumber(),
-  }, {
-    question: 'Question 2',
-    answer: 'Answer 2',
-    show: false,
-    id: getRandomNumber(),
-  }, {
-    question: 'Question 3',
-    answer: 'Answer 3',
-    show: false,
-    id: getRandomNumber(),
-  }];
+  flashes;
 
-  trackByFlashId(index: any, flash: { id: any; }) {
+  constructor(private flashService: FlashService) {
+    this.flashes = this.flashService.flashes;
+  }
+
+  trackByFlashId(index: any, flash) {
     return flash.id;
   }
 
   handleToggleCard(id: number) {
-    const flash = this.flashes.find(flash => flash.id === id)!;
-    flash.show = !flash.show;
+    this.flashService.toggleFlash(id);
   }
 
   handleDeleteCard(id: number) {
-    const flashId = this.flashes.findIndex(flash => flash.id === id)!;
-    this.flashes.splice(flashId, 1);
+    this.flashService.deleteFlash(id);
   }
 
   handleEdit(id: number) {
+    this.flash = this.flashService.getFlash(id)!;
     this.editing = true;
     this.editingId = id;
-    const flash = this.flashes.find(flash => flash.id === id)!;
-    this.flash.question = flash.question;
-    this.flash.answer = flash.answer;
   }
 
   handleUpdate() {
-    const flash = this.flashes.find(flash => flash.id === this.editingId)!;
-    flash.question = this.flash.question;
-    flash.answer = this.flash.answer;
+    this.flashService.updateFlash(this.editingId, this.flash);
     this.handleCancel();
   }
 
@@ -68,18 +53,15 @@ export class AppComponent {
     this.handleClear();
   }
 
-  handleRememberedChange({id, flag}){
-    const flash = this.flashes.find(flash => flash?.id === id)!;
-    flash.remembered = flag;
+  handleRememberedChange({id, flag}) {
+    this.flashService.rememberedChange(id, flag);
   }
-  handleSubmit(): void{
-    this.flashes.push({
-      ...this.flash,
-      show: false,
-      id: getRandomNumber(),
-    });
+
+  handleSubmit(): void {
+    this.flashService.addFlash(this.flash);
     this.handleClear();
   }
+
   handleClear() {
     this.flash = {
       question: '',
@@ -87,8 +69,4 @@ export class AppComponent {
     };
     this.flashForm.reset();
   }
-}
-
-function getRandomNumber(): number {
-  return Math.floor(Math.random() * 10000);
 }
