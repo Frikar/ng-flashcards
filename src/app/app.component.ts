@@ -1,8 +1,8 @@
-import {Component, Input, ViewChild} from '@angular/core';
+import {Component, Input, ViewChild, OnInit} from '@angular/core';
 import {Iflash} from './flash.model';
 import {NgForm} from '@angular/forms';
 import {FlashService} from './flash.service';
-import {templateJitUrl} from '@angular/compiler';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -12,16 +12,16 @@ import {templateJitUrl} from '@angular/compiler';
 
 export class AppComponent {
   @ViewChild('flashForm', {static: true}) flashForm!: NgForm;
+  flashs$!: Observable<Iflash[]>;
   editing = false;
   editingId: number | undefined;
   flash = {
     question: '',
     answer: ''
   };
-  flashes;
 
   constructor(private flashService: FlashService) {
-    this.flashes = this.flashService.flashes;
+    this.flashs$ = this.flashService.flashs$;
   }
 
   trackByFlashId(index: any, flash) {

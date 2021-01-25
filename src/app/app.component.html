@@ -1,6 +1,6 @@
 <div>
   <form #flashForm="ngForm" class="has-text-left">
-    <h1 class="is-size-3">Add New Flash Card</h1>
+    <h1 class="is-size-3">{{editing ? 'Edit': 'Add New'}} Flash Card</h1>
     <div class="field">
       <label class="label">Question</label>
       <div class="control">
@@ -27,8 +27,8 @@
     </ng-template>
   </form>
 </div>
-<div class="flashs">
-  <app-flash *ngFor="let flash of flashes; trackBy: trackByFlashId" [flash]="flash"
+<div class="flashs" *ngIf="flashs$ | async as flashs">
+  <app-flash *ngFor="let flash of flashs; trackBy: trackByFlashId" [flash]="flash"
              (toggleEvent)="handleToggleCard($event)" (deleteEvent)="handleDeleteCard($event)"
              (rememberedEvent)="handleRememberedChange($event)" (editEvent)="handleEdit($event)"></app-flash>
 </div>
